@@ -108,13 +108,13 @@
         }
 
         // 使用 window.location.href 进行跳转到搜索页面
-        window.location.href = `/search/${filter}`;
+        window.location.href = `/search/?q=${filter}`;
     }
 
 
     function install(packageName) {
-        fetch(`/install/${packageName}`, {
-            method: 'POST'
+        fetch(`/install/?q=${packageName}`, {
+            method: 'GET'
         }).then(response => {
             if (response.ok) {
                 alert('安装成功');

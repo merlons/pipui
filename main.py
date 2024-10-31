@@ -1,3 +1,5 @@
+import sys
+
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
@@ -5,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from bs4 import BeautifulSoup
 import subprocess
 import pkg_resources
-
+from fastapi.responses import RedirectResponse
 import requests
 
 
@@ -69,19 +71,28 @@ def search_packages(query="a"):
     return []
 
 
-@app.get("/install", response_class=HTMLResponse)
-async def read_install(request: Request):
+@app.get("/search", response_class=HTMLResponse)
+async def read_install(request: Request, q: str = "a"):
     # 你需要提供 available_packages 数据
-    available_packages = search_packages()  # 替换为你的逻辑
-    return templates.TemplateResponse("install.html", {"request": request, "available_packages": available_packages})
+    available_packages = search_packages(q)  # 替换为你的逻辑
+    return templates.TemplateResponse("search.html", {"request": request, "available_packages": available_packages})
 
 
-@app.get("/search/{package_name}")
-async def search_package(request: Request, package_name: str):
-    # 这里你可以使用 pip 的 API 或其他方法来查找可用的包
-    available_packages = search_packages(package_name)  # 替换为你的逻辑
-    # TODO: 替换为实际查找逻辑
-    return templates.TemplateResponse("install.html", {"request": request, "available_packages": available_packages})
+def install_package(package_name, index_url=None):
+    if index_url:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package_name, "--index-url", index_url])
+    else:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+
+
+@app.get("/install", response_class=HTMLResponse)
+async def read_install(request: Request, q: str = None):
+    try:
+        install_package(q)  # 假设这个函数会安装包
+    except Exception as e:
+        return f"<html><body><h1>Error: {str(e)}</h1></body></html>"
+
+    return "<html><body><h1>Install Successful!</h1></body></html>"
 
 
 if __name__ == "__main__":
