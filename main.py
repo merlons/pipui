@@ -76,5 +76,13 @@ async def read_install(request: Request):
     return templates.TemplateResponse("install.html", {"request": request, "available_packages": available_packages})
 
 
+@app.get("/search/{package_name}")
+async def search_package(request: Request, package_name: str):
+    # 这里你可以使用 pip 的 API 或其他方法来查找可用的包
+    available_packages = search_packages(package_name)  # 替换为你的逻辑
+    # TODO: 替换为实际查找逻辑
+    return templates.TemplateResponse("install.html", {"request": request, "available_packages": available_packages})
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8005)
