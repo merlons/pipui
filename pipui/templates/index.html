@@ -6,27 +6,57 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: #f5f5f5;
+            background-color: #121212; /* 更深的背景色 */
+            color: #e0e0e0; /* 更柔和的文字颜色 */
             margin: 0;
-            padding: 20px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
-        h1 {
+        .header, .footer {
+            background-color: #1e1e1e; /* 深色标题和底部 */
+            padding: 15px;
             text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .main {
+            display: flex;
+            flex: 1;
+            margin: 10px; /* 添加间距 */
+        }
+        .sidebar-left, .sidebar-right {
+            flex: 1;
+            background-color: #222; /* 边栏背景颜色 */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .content {
+            flex: 3;
+            padding: 20px;
+            background-color: #2c2c2c; /* 内容区域背景颜色 */
+            border-radius: 8px;
+            margin: 0 10px; /* 中间内容与边栏的间隔 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        h1, h2, h3 {
             color: #ffffff;
         }
-        #filter {
+        input, button, select {
             width: 100%;
             padding: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             border: 1px solid #444;
             border-radius: 5px;
-            background-color: #333;
-            color: #f5f5f5;
+            background-color: #333; /* 输入框背景颜色 */
+            color: #f5f5f5; /* 输入框文字颜色 */
+        }
+        button {
+            background-color: #d9534f; /* 按钮背景颜色 */
+            transition: background-color 0.3s; /* 按钮过渡效果 */
+        }
+        button:hover {
+            background-color: #c9302c; /* 按钮悬停效果 */
         }
         table {
             width: 100%;
@@ -42,52 +72,67 @@
             border-bottom: 1px solid #444;
         }
         th {
-            background-color: #444;
+            background-color: #444; /* 表头背景颜色 */
             cursor: pointer;
         }
         tr:hover {
-            background-color: #555;
-        }
-        button {
-            padding: 8px 12px;
-            color: white;
-            background-color: #d9534f;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #c9302c;
+            background-color: #555; /* 行悬停效果 */
         }
     </style>
 </head>
 <body>
-<h1>Python 包管理工具</h1>
-
-    <div>
-        <a href="search" style="color: #d9534f; text-decoration: none;">安装第三方库</a>
+    <div class="header">
+        <h1>Python 包管理工具</h1>
     </div>
-    <br>
-    <h1>已安装的包</h1>
-    <input type="text" id="filter" placeholder="按名称过滤..." oninput="filterPackages()">
-    <table>
-        <thead>
-            <tr>
-                <th onclick="sortTable(0)">名称</th>
-                <th onclick="sortTable(1)">版本</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody id="package-table">
-            {% for package in packages %}
-            <tr>
-                <td>{{ package.name }}</td>
-                <td>{{ package.version }}</td>
-                <td><button onclick="uninstall('{{ package.name }}')">卸载</button></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+    <div class="main">
+        <div class="sidebar-left">
+            <!-- 左边栏内容（暂时为空） -->
+        </div>
+
+        <div class="content">
+            <h2>已安装的包</h2>
+            <input type="text" id="filter" placeholder="按名称过滤..." oninput="filterPackages()">
+            <table>
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">名称</th>
+                        <th onclick="sortTable(1)">版本</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="package-table">
+                    {% for package in packages %}
+                    <tr>
+                        <td>{{ package.name }}</td>
+                        <td>{{ package.version }}</td>
+                        <td><button onclick="uninstall('{{ package.name }}')">卸载</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="sidebar-right">
+            <h2>搜索包</h2>
+            <input type="text" id="search-filter" placeholder="按名称搜索...">
+            <button onclick="searchPackages()">搜索</button>
+            <h3>镜像源</h3>
+            <select id="mirror-source">
+                <option value="https://pypi.python.org/simple">默认镜像</option>
+                <option value="https://mirrors.aliyun.com/pypi/simple/">阿里云</option>
+                <option value="https://pypi.tuna.tsinghua.edu.cn/simple">清华大学</option>
+                <option value="https://pypi.hust.edu.cn/simple">华中科技大学</option>
+                <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
+                <option value="https://pypi.douban.com/simple/">豆瓣</option>
+            </select>
+            <div id="search-results"></div> <!-- 搜索结果展示区域 -->
+        </div>
+    </div>
+
+    <div class="footer">
+        <!-- 底部内容（暂时为空） -->
+    </div>
 
     <script>
         let sortOrder = { name: 1, version: 1 }; // 1 为正序，-1 为倒序
@@ -126,6 +171,76 @@
                     location.reload(); // 卸载成功，刷新页面
                 } else {
                     alert('卸载失败');
+                }
+            });
+        }
+
+        function searchPackages() {
+            const filter = document.getElementById('search-filter').value.trim();
+            if (filter === "") {
+                alert('请输入包名');
+                return;
+            }
+
+            // 使用 fetch 从后台获取数据
+            fetch(`/search/?q=${filter}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络响应不是 OK');
+                    }
+                    return response.json(); // 解析为 JSON
+                })
+                .then(data => {
+                    renderSearchResults(data); // 渲染搜索结果
+                })
+                .catch(error => {
+                    console.error('获取数据失败:', error);
+                });
+        }
+
+        function renderSearchResults(data) {
+            const resultsContainer = document.getElementById('search-results');
+            resultsContainer.innerHTML = ''; // 清空之前的结果
+
+            if (data.length === 0) {
+                resultsContainer.innerHTML = '<p>未找到结果。</p>';
+                return;
+            }
+
+            const resultTable = document.createElement('table');
+            resultTable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+
+            data.forEach(package => {
+                resultTable.innerHTML += `
+                    <tr>
+                        <td>${package.name}</td>
+                        <td><button onclick="install('${package.name}')">安装</button></td>
+                    </tr>
+                `;
+            });
+
+            resultTable.innerHTML += `</tbody></table>`;
+            resultsContainer.appendChild(resultTable);
+        }
+
+        function install(packageName) {
+            const mirrorSource = document.getElementById('mirror-source').value;
+            fetch(`/install/?q=${packageName}&mirror=${mirrorSource}`, {
+                method: 'GET'
+            }).then(response => {
+                if (response.ok) {
+                    alert('安装成功');
+                    location.reload(); // 安装成功，刷新页面
+                } else {
+                    alert('安装失败');
                 }
             });
         }

@@ -1,4 +1,5 @@
 import sys
+from typing import Dict, List
 
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request
@@ -26,10 +27,12 @@ def uninstall_package(package_name):
         return True
     except subprocess.CalledProcessError:
         return False
+
+
 import pipui
 
 app = FastAPI()
-templates = Jinja2Templates(directory=pipui.__path__[0]+"/templates")
+templates = Jinja2Templates(directory=pipui.__path__[0] + "/templates")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -71,11 +74,11 @@ def search_packages(query="a"):
     return []
 
 
-@app.get("/search", response_class=HTMLResponse)
-async def read_install(request: Request, q: str = "a"):
-    # 你需要提供 available_packages 数据
+@app.get("/search", response_model=List[Dict[str, str]])
+async def search_package(q: str):
     available_packages = search_packages(q)  # 替换为你的逻辑
-    return templates.TemplateResponse("search.html", {"request": request, "available_packages": available_packages})
+    results = [pkg for pkg in available_packages if q.lower() in pkg["name"].lower()]
+    return results
 
 
 def install_package(package_name, index_url=None):
