@@ -26,10 +26,15 @@
         }
         .sidebar-left, .sidebar-right {
             flex: 1;
-            background-color: #222; /* 边栏背景颜色 */
-            padding: 20px;
+            background-color: rgba(34, 34, 34, 0); /* 设置为透明背景 */
+            padding: 5px; /* 减少内边距 */
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            height: 70vh; /* 设置固定高度 */
+            overflow-y: hidden; /* 去掉垂直滚动条 */
+            overflow-x: hidden; /* 去掉水平滚动条 */
+            display: flex;
+            flex-direction: column; /* 使内容垂直排列 */
         }
         .content {
             flex: 3;
@@ -43,13 +48,14 @@
             color: #ffffff;
         }
         input, button, select {
-            width: 100%;
-            padding: 10px;
+            width: calc(100% - 20px); /* 调整宽度以与表格对齐 */
+            padding: 8px; /* 减少内边距 */
             margin-bottom: 10px;
             border: 1px solid #444;
             border-radius: 5px;
             background-color: #333; /* 输入框背景颜色 */
             color: #f5f5f5; /* 输入框文字颜色 */
+            box-sizing: border-box; /* 确保内边距和边框不会影响宽度 */
         }
         button {
             background-color: #d9534f; /* 按钮背景颜色 */
@@ -61,13 +67,10 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
-            background: #2c2c2c;
-            border-radius: 5px;
-            overflow: hidden;
+            margin-bottom: 10px; /* 减少下边距 */
         }
         th, td {
-            padding: 15px;
+            padding: 5px; /* 减少单元格内边距 */
             text-align: left;
             border-bottom: 1px solid #444;
         }
@@ -77,6 +80,12 @@
         }
         tr:hover {
             background-color: #555; /* 行悬停效果 */
+        }
+        #search-results {
+            margin-top: 10px; /* 调整与搜索按钮的间距 */
+            flex-grow: 1; /* 使搜索结果区域填满剩余空间 */
+            overflow-y: hidden; /* 去掉搜索结果的滚动条 */
+            overflow-x: hidden; /* 去掉水平滚动条 */
         }
     </style>
 </head>
