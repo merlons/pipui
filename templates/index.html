@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Python 包管理工具</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+        }
+        #filter {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #f5f5f5;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: #2c2c2c;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        th {
+            background-color: #444;
+            cursor: pointer;
+        }
+        tr:hover {
+            background-color: #555;
+        }
+        button {
+            padding: 8px 12px;
+            color: white;
+            background-color: #d9534f;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <h1>已安装的包</h1>
+    <input type="text" id="filter" placeholder="按名称过滤..." oninput="filterPackages()">
+    <table>
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">名称</th>
+                <th onclick="sortTable(1)">版本</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="package-table">
+            {% for package in packages %}
+            <tr>
+                <td>{{ package.name }}</td>
+                <td>{{ package.version }}</td>
+                <td><button onclick="uninstall('{{ package.name }}')">卸载</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function filterPackages() {
+            const filter = document.getElementById('filter').value.toLowerCase();
+            const rows = document.querySelectorAll('#package-table tr');
+            rows.forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                row.style.display = name.includes(filter) ? '' : 'none';
+            });
+        }
+
+        function sortTable(columnIndex) {
+            const table = document.getElementById('package-table');
+            const rows = Array.from(table.rows);
+            rows.sort((a, b) => {
+                const aText = a.cells[columnIndex].textContent;
+                const bText = b.cells[columnIndex].textContent;
+                return aText.localeCompare(bText);
+            });
+            rows.forEach(row => table.appendChild(row)); // 移动行到表格
+        }
+
+        function uninstall(packageName) {
+            fetch(`/uninstall/${packageName}`, {
+                method: 'DELETE'
+            }).then(response => {
+                if (response.ok) {
+                    location.reload(); // 卸载成功，刷新页面
+                } else {
+                    alert('卸载失败');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
