@@ -26,10 +26,10 @@ def uninstall_package(package_name):
         return True
     except subprocess.CalledProcessError:
         return False
-
+import pipui
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=pipui.__path__[0]+"/templates")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -95,5 +95,9 @@ async def read_install(request: Request, q: str = None, mirror: str = "https://p
     return "<html><body><h1>Install Successful!</h1></body></html>"
 
 
+def main(host="0.0.0.0", port=8008):
+    uvicorn.run("pipui.main:app", host=host, port=port)
+
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8005)
+    main()
