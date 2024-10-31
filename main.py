@@ -2,9 +2,12 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-
+from bs4 import BeautifulSoup
 import subprocess
 import pkg_resources
+
+import requests
+
 
 def get_installed_packages():
     try:
@@ -14,12 +17,14 @@ def get_installed_packages():
     except subprocess.CalledProcessError:
         return []
 
+
 def uninstall_package(package_name):
     try:
         subprocess.check_call(["pip", "uninstall", "-y", package_name])
         return True
     except subprocess.CalledProcessError:
         return False
+
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -37,6 +42,38 @@ async def delete_package(package_name: str):
     if not success:
         raise HTTPException(status_code=404, detail="Package not found")
     return {"message": f"Package {package_name} uninstalled successfully"}
+
+
+def search_packages(query="a"):
+    if query:
+        response = requests.get(f'https://pypi.org/search/?q={query}')
+    else:
+        response = requests.get(f'https://pypi.org/search')
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        results = []
+        for pkg in soup.find_all('a', class_='package-snippet'):
+            results.append({
+                'name': pkg.find('span', class_='package-snippet__name').text,
+                'version': pkg.find('span', class_='package-snippet__version').text,
+                'description': pkg.find('p', class_='package-snippet__description').text.strip()
+            })
+        return [
+            {
+                'name': pkg.find('span', class_='package-snippet__name').text,
+                'version': pkg.find('span', class_='package-snippet__version').text,
+                'description': pkg.find('p', class_='package-snippet__description').text.strip()
+            }
+            for pkg in soup.find_all('a', class_='package-snippet')
+        ]
+    return []
+
+
+@app.get("/install", response_class=HTMLResponse)
+async def read_install(request: Request):
+    # 你需要提供 available_packages 数据
+    available_packages = search_packages()  # 替换为你的逻辑
+    return templates.TemplateResponse("install.html", {"request": request, "available_packages": available_packages})
 
 
 if __name__ == "__main__":
