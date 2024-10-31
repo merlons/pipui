@@ -256,37 +256,40 @@
     }
 
     function renderSearchResults(data) {
-        const resultsContainer = document.getElementById('search-results');
-        resultsContainer.innerHTML = ''; // 清空之前的结果
+    const resultsContainer = document.getElementById('search-results');
+    resultsContainer.innerHTML = ''; // 清空之前的结果
 
-        if (data.length === 0) {
-            resultsContainer.innerHTML = '<p>未找到结果。</p>';
-            return;
-        }
-
-        const resultTable = document.createElement('table');
-        resultTable.innerHTML = `
-                <thead>
-                    <tr>
-                        <th>名称</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-            `;
-
-        data.forEach(package => {
-            resultTable.innerHTML += `
-                    <tr>
-                        <td>${package.name}</td>
-                        <td><button onclick="install('${package.name}')">安装</button></td>
-                    </tr>
-                `;
-        });
-
-        resultTable.innerHTML += `</tbody></table>`;
-        resultsContainer.appendChild(resultTable);
+    if (data.length === 0) {
+        resultsContainer.innerHTML = '<p>未找到结果。</p>';
+        return;
     }
+
+    const resultTable = document.createElement('table');
+    resultTable.innerHTML = `
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>版本</th> <!-- 新增版本号列 -->
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+    `;
+
+    data.forEach(package => {
+        resultTable.innerHTML += `
+            <tr>
+                <td>${package.name}</td>
+                <td>${package.version}</td> <!-- 显示版本号 -->
+                <td><button onclick="install('${package.name}')">安装</button></td>
+            </tr>
+        `;
+    });
+
+    resultTable.innerHTML += `</tbody></table>`;
+    resultsContainer.appendChild(resultTable);
+}
+
 
     function install(packageName) {
         const mirrorSource = document.getElementById('mirror-source').value;
