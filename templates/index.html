@@ -84,6 +84,8 @@
     </table>
 
     <script>
+        let sortOrder = { name: 1, version: 1 }; // 1 为正序，-1 为倒序
+
         function filterPackages() {
             const filter = document.getElementById('filter').value.toLowerCase();
             const rows = document.querySelectorAll('#package-table tr');
@@ -96,11 +98,17 @@
         function sortTable(columnIndex) {
             const table = document.getElementById('package-table');
             const rows = Array.from(table.rows);
+            const columnNames = ['name', 'version'];
+
+            // 切换排序顺序
+            sortOrder[columnNames[columnIndex]] *= -1;
+
             rows.sort((a, b) => {
                 const aText = a.cells[columnIndex].textContent;
                 const bText = b.cells[columnIndex].textContent;
-                return aText.localeCompare(bText);
+                return sortOrder[columnNames[columnIndex]] * aText.localeCompare(bText);
             });
+
             rows.forEach(row => table.appendChild(row)); // 移动行到表格
         }
 
