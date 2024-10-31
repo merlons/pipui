@@ -72,6 +72,15 @@
         tr:hover {
             background-color: #555;
         }
+
+        select {
+            padding: 10px;
+            margin-left: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #f5f5f5;
+        }
     </style>
 </head>
 <body>
@@ -79,6 +88,14 @@
 <div id="filter-container">
     <input type="text" id="filter" placeholder="按名称搜索...">
     <button onclick="searchPackages()">搜索</button>
+    <select id="mirror-source">
+        <option value="https://pypi.python.org/simple">默认镜像</option>
+        <option value="https://mirrors.aliyun.com/pypi/simple/">阿里云</option>
+        <option value="https://pypi.tuna.tsinghua.edu.cn/simple">清华大学</option>
+        <option value="https://pypi.hust.edu.cn/simple">华中科技大学</option>
+        <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
+        <option value="https://pypi.douban.com/simple/">豆瓣</option>
+    </select>
 </div>
 <table>
     <thead>
@@ -111,9 +128,9 @@
         window.location.href = `/search/?q=${filter}`;
     }
 
-
     function install(packageName) {
-        fetch(`/install/?q=${packageName}`, {
+        const mirrorSource = document.getElementById('mirror-source').value;
+        fetch(`/install/?q=${packageName}&mirror=${mirrorSource}`, {
             method: 'GET'
         }).then(response => {
             if (response.ok) {

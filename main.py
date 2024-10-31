@@ -86,9 +86,9 @@ def install_package(package_name, index_url=None):
 
 
 @app.get("/install", response_class=HTMLResponse)
-async def read_install(request: Request, q: str = None):
+async def read_install(request: Request, q: str = None, mirror: str = "https://pypi.python.org/simple"):
     try:
-        install_package(q)  # 假设这个函数会安装包
+        install_package(q, mirror)  # 假设这个函数会安装包
     except Exception as e:
         return f"<html><body><h1>Error: {str(e)}</h1></body></html>"
 
