@@ -98,6 +98,15 @@ async def read_install(request: Request, q: str = None, mirror: str = "https://p
     return "<html><body><h1>Install Successful!</h1></body></html>"
 
 
+@app.get("/interpreter-info", response_model=Dict[str, str])
+def interpreter_info():
+    import sys
+    return {
+        'version': sys.version,
+        'path': sys.executable
+    }
+
+
 def main(host="0.0.0.0", port=8008):
     uvicorn.run("pipui.main:app", host=host, port=port)
 
