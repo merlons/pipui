@@ -17,7 +17,7 @@ if os.path.exists("./build"):
 setup(
     name="pipui",
     # version=datetime.now().strftime("%Y%m%d"),
-    version="0.1.2",
+    version="0.1.3",
     description="pipui",
     author="merlon",
     license="BSD",
