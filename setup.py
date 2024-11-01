@@ -10,7 +10,7 @@ from setuptools.command.install import install
 import subprocess
 import os
 
-with open("README.md", "r",encoding='utf-8') as f:
+with open("README.md", "r", encoding='utf-8') as f:
     long_description = f.read()
 if __name__ == '__main__':
     sys.argv.extend(["sdist", "bdist_wheel", "-d", "./dist/"])
@@ -19,7 +19,7 @@ if os.path.exists("./build"):
 setup(
     name="pipui",
     # version=datetime.now().strftime("%Y%m%d"),
-    version="0.1.5",
+    version="0.1.6",
     description="pipui",
     long_description=long_description,
     author="merlon",
