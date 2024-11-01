@@ -6,7 +6,7 @@ import requests
 
 def get_installed_packages():
     try:
-        packages = subprocess.check_output(['pip', 'list', '--format=freeze'],
+        packages = subprocess.check_output([sys.executable, "-m", 'pip', 'list', '--format=freeze'],
                                            stderr=subprocess.STDOUT, ).decode().replace('\r\n', '\n').split('\n')
         return [{'name': p.split('==')[0], 'version': p.split('==')[1]} for p in packages if '==' in p]
     except subprocess.CalledProcessError:
@@ -15,7 +15,7 @@ def get_installed_packages():
 
 def uninstall_package(package_name):
     try:
-        subprocess.check_call(["pip", "uninstall", "-y", package_name])
+        subprocess.check_call([sys.executable, "-m", "pip", "uninstall", "-y", package_name])
         return True
     except subprocess.CalledProcessError:
         return False
@@ -33,7 +33,7 @@ def get_available_versions(package_name):
 
         # 调用 pip index versions 命令并捕获输出
         result = subprocess.check_output(
-            ['pip', 'index', 'versions', package_name],
+            [sys.executable, "-m", 'pip', 'index', 'versions', package_name],
             stderr=subprocess.STDOUT,  # 将标准错误合并到标准输出
             # text=True  # 以文本模式返回输出
         )
