@@ -19,7 +19,7 @@ if os.path.exists("./build"):
 setup(
     name="pipui",
     # version=datetime.now().strftime("%Y%m%d"),
-    version="0.1.7",
+    version="0.1.8",
     description="pipui",
     long_description=long_description,
     author="merlon",
@@ -29,9 +29,7 @@ setup(
     package_data={"pipui": ["templates/*", ], },
     # include_package
     install_requires=[
-        "uvicorn",
-        "jinja2",
-        "fastapi",
+        "flask",
         "requests",
         "beautifulsoup4",
 
