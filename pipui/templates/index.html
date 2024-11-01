@@ -137,34 +137,44 @@
             margin-top: 5px; /* 行间距 */
             color: #959191; /* 维持灰色风格 */
         }
-/* 美化下拉框 */
-select {
-    width: 100%; /* 让下拉框占满整个单元格 */
-    padding: 5px; /* 内边距 */
-    border: 1px solid #444; /* 边框颜色 */
-    border-radius: 5px; /* 圆角 */
-    background-color: #333; /* 背景颜色 */
-    color: #f5f5f5; /* 文字颜色 */
-    box-sizing: border-box; /* 包含内边距和边框在宽度计算内 */
-    margin-bottom: 5px; /* 下方间距 */
-}
 
-/*!* 按钮样式 *!*/
-/*button {*/
-/*    margin-top: 5px; !* 按钮上方间距 *!*/
-/*    background-color: #007bff; !* 按钮背景色 *!*/
-/*    color: #ffffff; !* 按钮文字颜色 *!*/
-/*    border: none;*/
-/*    padding: 8px 12px; !* 调整高度 *!*/
-/*    border-radius: 5px;*/
-/*    cursor: pointer;*/
-/*    font-size: 14px;*/
-/*    width: 100%; !* 让按钮宽度占满单元格 *!*/
-/*}*/
+        /* 美化下拉框 */
+        select {
+            width: 100%; /* 让下拉框占满整个单元格 */
+            padding: 5px; /* 内边距 */
+            border: 1px solid #444; /* 边框颜色 */
+            border-radius: 5px; /* 圆角 */
+            background-color: #333; /* 背景颜色 */
+            color: #f5f5f5; /* 文字颜色 */
+            box-sizing: border-box; /* 包含内边距和边框在宽度计算内 */
+            margin-bottom: 5px; /* 下方间距 */
+        }
 
-/*button:hover {*/
-/*    background-color: #0056b3; !* 悬停时按钮背景色 *!*/
-/*}*/
+        #search-results table {
+            width: 100%; /* 确保表格宽度为100% */
+            border-collapse: collapse; /* 合并边框 */
+            table-layout: fixed; /* 列宽固定 */
+        }
+
+        #search-results th, #search-results td {
+            padding: 10px; /* 增加内边距 */
+            text-align: center; /* 中间对齐 */
+            border-bottom: 1px solid #444; /* 只保留底部边框 */
+        }
+
+        #search-results th {
+            background-color: #444; /* 表头背景颜色 */
+        }
+
+        /* 去掉单元格之间的竖线边框 */
+        #search-results td {
+            border-left: none; /* 去掉左边的边框 */
+            border-right: none; /* 去掉右边的边框 */
+        }
+
+        #search-results tr:hover {
+            background-color: #555; /* 行悬停效果 */
+        }
 
 
     </style>
@@ -295,17 +305,17 @@ select {
             });
     }
 
-function renderSearchResults(data) {
-    const resultsContainer = document.getElementById('search-results');
-    resultsContainer.innerHTML = ''; // 清空之前的结果
+    function renderSearchResults(data) {
+        const resultsContainer = document.getElementById('search-results');
+        resultsContainer.innerHTML = ''; // 清空之前的结果
 
-    if (data.length === 0) {
-        resultsContainer.innerHTML = '<p>未找到结果。</p>';
-        return;
-    }
+        if (data.length === 0) {
+            resultsContainer.innerHTML = '<p>未找到结果。</p>';
+            return;
+        }
 
-    const resultTable = document.createElement('table');
-    resultTable.innerHTML = `
+        const resultTable = document.createElement('table');
+        resultTable.innerHTML = `
         <thead>
             <tr>
                 <th>名称</th>
@@ -316,47 +326,45 @@ function renderSearchResults(data) {
         <tbody>
     `;
 
-    data.forEach(package => {
-        resultTable.innerHTML += `
-    <tr>
-        <td>${package.name}</td>
-        <td>
-            <div style="display: flex; flex-direction: column;">
-                <select id="version-select-${package.name}">
-                    ${package.versions.map(version => `
-                        <option value="${version}" ${version === package.version ? 'selected' : ''}>${version}</option>
-                    `).join('')}
-                </select>
-                <button onclick="install('${package.name}')">安装</button>
-            </div>
-        </td>
-    </tr>
-`;
+        data.forEach(package => {
+            resultTable.innerHTML += `
+            <tr>
+                <td>${package.name}</td>
+                <td>
+                    <select id="version-select-${package.name}">
+                        ${package.versions.map(version => `
+                            <option value="${version}" ${version === package.version ? 'selected' : ''}>${version}</option>
+                        `).join('')}
+                    </select>
+                </td>
+                <td>
+                    <button onclick="install('${package.name}')">安装</button>
+                </td>
+            </tr>
+        `;
+        });
 
-    });
-
-    resultTable.innerHTML += `</tbody></table>`;
-    resultsContainer.appendChild(resultTable);
-}
-
+        resultTable.innerHTML += `</tbody></table>`;
+        resultsContainer.appendChild(resultTable);
+    }
 
 
-   function install(packageName) {
-    const versionSelect = document.getElementById(`version-select-${packageName}`);
-    const selectedVersion = versionSelect.value; // 获取当前选择的版本
-    const mirrorSource = document.getElementById('mirror-source').value;
+    function install(packageName) {
+        const versionSelect = document.getElementById(`version-select-${packageName}`);
+        const selectedVersion = versionSelect.value; // 获取当前选择的版本
+        const mirrorSource = document.getElementById('mirror-source').value;
 
-    fetch(`/install/?q=${packageName}&version=${selectedVersion}&mirror=${mirrorSource}`, {
-        method: 'GET'
-    }).then(response => {
-        if (response.ok) {
-            alert('安装成功');
-            location.reload(); // 安装成功，刷新页面
-        } else {
-            alert('安装失败');
-        }
-    });
-}
+        fetch(`/install/?q=${packageName}&version=${selectedVersion}&mirror=${mirrorSource}`, {
+            method: 'GET'
+        }).then(response => {
+            if (response.ok) {
+                alert('安装成功');
+                location.reload(); // 安装成功，刷新页面
+            } else {
+                alert('安装失败');
+            }
+        });
+    }
 
 
     document.addEventListener("DOMContentLoaded", function () {
