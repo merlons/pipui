@@ -67,9 +67,8 @@ def get_available_versions(package_name):
     # 解析输出
     versions = []
     for line in result.stdout.splitlines():
-        match = re.search(r'(\d+\.\d+\.\d+)', line)
-        if match:
-            versions.append(match.group(1))
+        if "Available versions:" in line:
+            versions = line.replace("Available versions:", "").replace(' ', '').split(',')
 
     return versions
 

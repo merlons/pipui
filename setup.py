@@ -10,15 +10,18 @@ from setuptools.command.install import install
 import subprocess
 import os
 
+with open("README.md", "r",encoding='utf-8') as f:
+    long_description = f.read()
 if __name__ == '__main__':
-    sys.argv.extend(["sdist","bdist_wheel", "-d", "./dist/"])
+    sys.argv.extend(["sdist", "bdist_wheel", "-d", "./dist/"])
 if os.path.exists("./build"):
     shutil.rmtree("./build")
 setup(
     name="pipui",
     # version=datetime.now().strftime("%Y%m%d"),
-    version="0.1.3",
+    version="0.1.5",
     description="pipui",
+    long_description=long_description,
     author="merlon",
     license="BSD",
     packages=find_packages(),
