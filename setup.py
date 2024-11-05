@@ -5,9 +5,6 @@ import os
 import shutil
 import sys
 from setuptools import setup, find_packages
-from datetime import datetime
-from setuptools.command.install import install
-import subprocess
 import os
 
 with open("README.md", "r", encoding='utf-8') as f:
@@ -19,7 +16,7 @@ if os.path.exists("./build"):
 setup(
     name="pipui",
     # version=datetime.now().strftime("%Y%m%d"),
-    version="0.1.11",
+    version="0.1.12",
     description="pipui",
     long_description=long_description,
     author="merlon",
@@ -35,7 +32,7 @@ setup(
 
     ],
     setup_requires=["setuptools", "wheel"],
-    entry_points={"console_scripts": ["pipui = pipui.main:main"]},
+    entry_points={"console_scripts": ["pipui = pipui.server:main"]},
     python_requires=">=3.6, <4",
     # include_package_data=True,
     cmdclass={

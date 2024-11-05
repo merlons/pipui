@@ -1,4 +1,5 @@
-from pipui.main import main
+import fire
+from pipui.server import main
 
 if __name__ == "__main__":
-    main()
+    fire.Fire(main)

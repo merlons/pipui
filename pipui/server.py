@@ -1,3 +1,4 @@
+import fire
 from flask import Flask, request, jsonify, render_template
 import pipui
 from pipui.utils import PipManager, available_packages
@@ -55,9 +56,8 @@ def pip_install():
     return jsonify({"message": "安装成功"}), 200
 
 
-def main(host="0.0.0.0", port=6001):
+def main(host="0.0.0.0", port=5000):
     app.run(host=host, port=port)
 
 
-if __name__ == "__main__":
-    main()
+
