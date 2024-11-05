@@ -175,7 +175,84 @@
         #search-results tr:hover {
             background-color: #555; /* 行悬停效果 */
         }
+/* .sidebar-left 部分样式 */
+.sidebar-left {
+    flex: 1;
+    background-color: #2c2c2c; /* 深色背景 */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 添加阴影 */
+    height: 70vh; /* 固定高度 */
+    overflow-y: auto; /* 添加垂直滚动条 */
+    display: flex;
+    flex-direction: column; /* 垂直排列 */
+}
 
+.sidebar-left h2 {
+    font-size: 1.5em;
+    color: #ffffff;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #444; /* 分割线 */
+    padding-bottom: 5px;
+}
+
+.interpreter-info {
+    margin-bottom: 20px;
+}
+
+.interpreter-info span {
+    display: block;
+    color: #bbb; /* 更柔和的灰色 */
+    margin-bottom: 8px; /* 适当增加行间距 */
+}
+
+#install-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #333;
+    color: #f5f5f5;
+    box-sizing: border-box;
+    margin-bottom: 15px; /* 输入框下方间距 */
+}
+
+#install-input::placeholder {
+    color: #aaa;
+}
+
+.install-controls {
+    display: flex;
+    flex-direction: column;
+}
+
+.install-controls select {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #333;
+    color: #f5f5f5;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.install-controls button {
+    padding: 10px;
+    background-color: #4CAF50; /* 绿色按钮 */
+    color: white;
+    font-size: 1em;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.install-controls button:hover {
+    background-color: #45a049; /* 鼠标悬停效果 */
+}
 
     </style>
 </head>
@@ -188,9 +265,32 @@
 </div>
 
 <div class="main">
-    <div class="sidebar-left">
-        <!-- 左边栏内容（暂时为空） -->
+
+
+<div class="sidebar-left">
+    <h2>基本信息</h2>
+    <div class="interpreter-info">
+        <span>Python 版本: <strong id="python-version">Python 3.6</strong></span>
+        <span>Python 路径: <strong id="python-path">/usr/bin/python</strong></span>
     </div>
+    <h2>在线安装</h2>
+    <input type="text" id="install-input" placeholder="请输入库名和版本，例如：pandas==2.0" />
+    <div class="install-controls">
+        <select id="install-mirror-source">
+            <option value="https://pypi.python.org/simple">默认镜像</option>
+            <option value="https://mirrors.aliyun.com/pypi/simple/">阿里云</option>
+            <option value="https://pypi.tuna.tsinghua.edu.cn/simple">清华大学</option>
+            <option value="https://pypi.hust.edu.cn/simple">华中科技大学</option>
+            <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
+            <option value="https://pypi.douban.com/simple/">豆瓣</option>
+        </select>
+        <button onclick="installPackages()">安装</button>
+    </div>
+</div>
+
+
+
+
 
     <div class="content">
         <h2>已安装的包</h2>
