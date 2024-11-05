@@ -54,11 +54,6 @@
             color: #ffffff;
         }
 
-        .search-container {
-            position: relative;
-            width: 100%;
-            margin-bottom: 20px;
-        }
 
         input {
             width: 100%;
@@ -127,11 +122,11 @@
             padding-bottom: 5px;
         }
 
-        .interpreter-info {
+        #interpreter-info {
             margin-bottom: 20px;
         }
 
-        .interpreter-info span {
+        #interpreter-info span {
             display: block;
             color: #bbb;
             margin-bottom: 8px;
@@ -203,15 +198,53 @@
             background-color: #555;
         }
 
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 80%; /* 输入框宽度占大部分 */
+            padding: 8px 12px; /* 调整内边距，让输入框和按钮高度一致 */
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #f5f5f5;
+            box-sizing: border-box;
+            height: 40px; /* 确保输入框和按钮高度一致 */
+            line-height: 24px; /* 确保文本垂直居中 */
+        }
+
+        .search-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 15px; /* 调整内边距，使按钮和输入框对齐 */
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-left: 10px;
+            height: 40px; /* 确保按钮和输入框高度一致 */
+            line-height: 24px; /* 确保按钮内文本垂直居中 */
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+
+        #interpreter-info {
+            white-space: normal; /* 确保文本自动换行 */
+            word-wrap: break-word; /* 在长单词时自动换行 */
+            word-break: break-word; /* 确保长单词（如路径）也能正确换行 */
+        }
+
     </style>
 
 </head>
 <body>
 <div class="header">
     <h1>Python 包管理工具</h1>
-    <div id="interpreter-info">
-        <!-- 解释器信息将在这里填充 -->
-    </div>
 </div>
 
 <div class="main">
@@ -220,19 +253,11 @@
     <div class="sidebar-left">
         <h2>在线搜索</h2>
         <div class="search-container">
-            <!--                <span class="search-icon">🔍</span>-->
-            <input type="text" id="search-filter" placeholder="按名称搜索..."
-                   onkeypress="if (event.key === 'Enter') searchPackages()">
+            <input type="text" id="search-filter" placeholder="按名称搜索...">
+            <!-- 将按钮放到输入框右侧 -->
+            <button id="search-button" onclick="searchPackages()">搜索</button>
         </div>
-        <h3>镜像源</h3>
-        <select id="mirror-source">
-            <option value="https://pypi.python.org/simple">默认镜像</option>
-            <option value="https://mirrors.aliyun.com/pypi/simple/">阿里云</option>
-            <option value="https://pypi.tuna.tsinghua.edu.cn/simple">清华大学</option>
-            <option value="https://pypi.hust.edu.cn/simple">华中科技大学</option>
-            <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
-            <option value="https://pypi.douban.com/simple/">豆瓣</option>
-        </select>
+
         <div id="search-results"></div> <!-- 搜索结果展示区域 -->
     </div>
 
@@ -264,9 +289,9 @@
 
     <div class="sidebar-right">
         <h2>基本信息</h2>
-        <div class="interpreter-info">
-            <span>Python 路径: <strong id="python-path">/usr/bin/python</strong></span>
-            <span>Python 版本: <strong id="python-version">Python 3.6</strong></span>
+        <div id="interpreter-info">
+            <!--            <span>Python 路径: <strong id="python-path">/usr/bin/python</strong></span>-->
+            <!--            <span>Python 版本: <strong id="python-version">Python 3.6</strong></span>-->
         </div>
         <h2>在线安装</h2>
         <div class="install-controls">
@@ -278,7 +303,10 @@
                 <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
                 <option value="https://pypi.douban.com/simple/">豆瓣</option>
             </select>
+
+            <input type="file" id="file-input" accept=".txt"/>
             <textarea id="install-input" placeholder="请输入库名和版本，例如：pandas==2.0" rows="4"></textarea>
+
             <button onclick="installPackages()">安装</button>
         </div>
     </div>
@@ -365,36 +393,50 @@
 
         const resultTable = document.createElement('table');
         resultTable.innerHTML = `
-        <thead>
-            <tr>
-                <th>名称</th>
-                <th>版本</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
+    <thead>
+        <tr>
+            <th>名称</th>
+            <th>版本</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
     `;
 
         data.forEach(package => {
             resultTable.innerHTML += `
-            <tr>
-                <td>${package.name}</td>
-                <td>
-                    <select id="version-select-${package.name}">
-                        ${package.versions.map(version => `
-                            <option value="${version}" ${version === package.version ? 'selected' : ''}>${version}</option>
-                        `).join('')}
-                    </select>
-                </td>
-                <td>
-                    <button onclick="install('${package.name}')">安装</button>
-                </td>
-            </tr>
+        <tr>
+            <td>${package.name}</td>
+            <td>
+                <select id="version-select-${package.name}">
+                    ${package.versions.map(version => `
+                        <option value="${version}" ${version === package.version ? 'selected' : ''}>${version}</option>
+                    `).join('')}
+                </select>
+            </td>
+            <td>
+                <button onclick="addToTextarea('${package.name}')">添加</button>
+            </td>
+        </tr>
         `;
         });
 
         resultTable.innerHTML += `</tbody></table>`;
         resultsContainer.appendChild(resultTable);
+    }
+
+    function addToTextarea(packageName) {
+        // 获取当前选中的版本号
+        const versionSelect = document.getElementById(`version-select-${packageName}`);
+        const selectedVersion = versionSelect.value;
+
+        // 拼接成 "name==version" 格式
+        const packageString = `${packageName}==${selectedVersion}`;
+
+        const installInput = document.getElementById('install-input'); // 获取右侧的文本框
+
+        // 追加到文本框内容末尾，换行显示
+        installInput.value += (installInput.value ? '\n' : '') + packageString;
     }
 
 
@@ -421,16 +463,86 @@
             .then(response => response.json())
             .then(data => {
                 const infoDiv = document.getElementById('interpreter-info');
-                infoDiv.innerHTML = `
-<!--                <strong>当前解释器信息:</strong><br>-->
-                <span>Python Version: ${data.version}</span><br>
-                <span>Python Path: ${data.path}</span>
-            `;
+//                 infoDiv.innerHTML = `
+// <!--                <strong>当前解释器信息:</strong><br>-->
+//                 <span>Python Version: ${data.version}</span><br>
+//                 <span>Python Path: ${data.path}</span>
+//             `;
             })
             .catch(error => {
                 console.error('获取解释器信息失败:', error);
             });
     });
+
+    // 获取并发送安装数据的函数
+    function installPackages() {
+        const packageDetails = document.getElementById('install-input').value; // 获取输入框内容
+        const mirrorSource = document.getElementById('install-mirror-source').value; // 获取镜像源
+
+        // 校验输入内容是否为空
+        if (!packageDetails.trim()) {
+            alert('请输入有效的包名和版本');
+            return;
+        }
+
+        // 创建一个对象，准备发送到后端
+        const data = {
+            packageDetails: packageDetails,
+            mirrorSource: mirrorSource
+        };
+
+        // 发送 POST 请求到后端
+        fetch('/install', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data) // 将数据转为 JSON 格式
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('安装成功');
+                    location.reload(); // 安装成功后刷新页面
+                } else {
+                    alert('安装失败');
+                }
+            })
+            .catch(error => {
+                console.error('安装请求失败:', error);
+                alert('请求失败，请稍后重试');
+            });
+    }
+
+    // 监听文件选择事件
+    document.getElementById('file-input').addEventListener('change', function (event) {
+        const file = event.target.files[0];  // 获取用户选择的文件
+        if (file) {
+            const reader = new FileReader();  // 创建 FileReader 实例
+            reader.onload = function (e) {
+                // 将文件内容填充到文本框中
+                document.getElementById('install-input').value = e.target.result;
+            };
+            reader.readAsText(file);  // 读取文件内容为文本
+        }
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/interpreter-info')
+            .then(response => response.json())  // 解析返回的 JSON 数据
+            .then(data => {
+                const infoDiv = document.getElementById('interpreter-info');
+                // 动态填充 Python 版本和路径
+                infoDiv.innerHTML = `
+                <span>Python 版本: <strong>${data.version}</strong></span><br>
+                <span>Python 路径: <strong>${data.path}</strong></span>
+            `;
+            })
+            .catch(error => {
+                console.error('获取解释器信息失败:', error);
+                const infoDiv = document.getElementById('interpreter-info');
+                infoDiv.innerHTML = `<span>无法获取解释器信息</span>`;
+            });
+    });
+
 
 </script>
 </body>

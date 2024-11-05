@@ -28,18 +28,35 @@ def search_package():
     return jsonify(results)
 
 
-@app.route("/install/", methods=["GET"])
-def read_install():
-    q = request.args.get('q')
-    version = request.args.get('version')
-    mirror = request.args.get('mirror', "https://pypi.python.org/simple")
+# @app.route("/install/", methods=["GET","POST"])
+# def read_install():
+#     q = request.args.get('q')
+#     version = request.args.get('version')
+#     mirror = request.args.get('mirror', "https://pypi.python.org/simple")
+#
+#     try:
+#         install_package(f"{q}=={version}" if version else q, mirror)  # 假设这个函数会安装包
+#     except Exception as e:
+#         return {"msg": str(e)}
+#
+#     return {"msg": "Install Successful!"}
 
+
+@app.route('/install', methods=['POST'])
+def install():
+    data = request.get_json()
+    package_details = data.get('packageDetails')
+    mirror_source = data.get('mirrorSource')
+
+    # 在这里执行安装逻辑，比如调用系统命令安装包
+    print(f"安装包：{package_details}，镜像源：{mirror_source}")
     try:
-        install_package(f"{q}=={version}" if version else q, mirror)  # 假设这个函数会安装包
+        install_package(package_details.replace('\n', ' ').replace("\r", ' '), mirror_source)  # 假设这个函数会安装包
     except Exception as e:
         return {"msg": str(e)}
 
-    return {"msg": "Install Successful!"}
+    # 假设安装成功，返回成功响应
+    return jsonify({"message": "安装成功"}), 200
 
 
 @app.route("/interpreter-info", methods=["GET"])

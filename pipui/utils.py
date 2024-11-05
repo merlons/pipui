@@ -22,10 +22,13 @@ def uninstall_package(package_name):
 
 
 def install_package(package_name, index_url=None):
-    if index_url:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", package_name, "--index-url", index_url])
-    else:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+    for i in package_name.split(' '):
+        if not i:
+            continue
+        if index_url:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", i, "--index-url", index_url])
+        else:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", i])
 
 
 def get_available_versions(package_name):
