@@ -6,6 +6,16 @@ from pipui.utils import get_installed_packages, uninstall_package, search_packag
 app = Flask(__name__, template_folder=pipui.__path__[0] + "/templates")
 
 
+@app.route("/interpreter-info", methods=["GET"])
+def interpreter_info():
+    import sys
+    version = sys.version_info
+    return {
+        'version': f"{version.major}.{version.minor}.{version.micro}",
+        'path': sys.executable
+    }
+
+
 @app.route("/", methods=["GET"])
 def read_root():
     packages = get_installed_packages()
@@ -28,20 +38,6 @@ def search_package():
     return jsonify(results)
 
 
-# @app.route("/install/", methods=["GET","POST"])
-# def read_install():
-#     q = request.args.get('q')
-#     version = request.args.get('version')
-#     mirror = request.args.get('mirror', "https://pypi.python.org/simple")
-#
-#     try:
-#         install_package(f"{q}=={version}" if version else q, mirror)  # 假设这个函数会安装包
-#     except Exception as e:
-#         return {"msg": str(e)}
-#
-#     return {"msg": "Install Successful!"}
-
-
 @app.route('/install', methods=['POST'])
 def install():
     data = request.get_json()
@@ -57,15 +53,6 @@ def install():
 
     # 假设安装成功，返回成功响应
     return jsonify({"message": "安装成功"}), 200
-
-
-@app.route("/interpreter-info", methods=["GET"])
-def interpreter_info():
-    import sys
-    return {
-        'version': sys.version,
-        'path': sys.executable
-    }
 
 
 def main(host="0.0.0.0", port=6001):
