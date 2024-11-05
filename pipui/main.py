@@ -13,12 +13,17 @@ def interpreter_info():
 
 @app.route("/", methods=["GET"])
 def read_root():
+    return render_template("index.html")
+
+
+@app.route("/installed", methods=["GET"])
+def pip_list():
     packages = PipManager().pip_list()
-    return render_template("index.html", packages=packages)
+    return jsonify(packages)
 
 
 @app.route("/uninstall/<package_name>", methods=["DELETE"])
-def delete_package(package_name: str):
+def pip_uninstall(package_name: str):
     success = PipManager().pip_uninstall(package_name)
     if not success:
         return jsonify({"detail": "Package not found"}), 404
@@ -26,7 +31,7 @@ def delete_package(package_name: str):
 
 
 @app.route("/search/", methods=["GET"])
-def search_package():
+def pip_search():
     q = request.args.get('q')
     available_packages = PipManager().pip_search(q)  # 替换为你的逻辑
     results = [pkg for pkg in available_packages if q.lower() in pkg["name"].lower()]
@@ -34,7 +39,7 @@ def search_package():
 
 
 @app.route('/install', methods=['POST'])
-def install():
+def pip_install():
     data = request.get_json()
     package_details = data.get('packageDetails')
     mirror_source = data.get('mirrorSource')

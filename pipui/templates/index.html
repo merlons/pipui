@@ -230,15 +230,15 @@
             </tr>
             </thead>
             <tbody id="package-table">
-            {% for package in packages %}
-            <tr>
-                <td>{{ package.name }}</td>
-                <td>{{ package.version }}</td>
-                <td>
-                    <button onclick="uninstall('{{ package.name }}')">卸载</button>
-                </td>
-            </tr>
-            {% endfor %}
+            <!--            {% for package in packages %}-->
+            <!--            <tr>-->
+            <!--                <td>{{ package.name }}</td>-->
+            <!--                <td>{{ package.version }}</td>-->
+            <!--                <td>-->
+            <!--                    <button onclick="uninstall('{{ package.name }}')">卸载</button>-->
+            <!--                </td>-->
+            <!--            </tr>-->
+            <!--            {% endfor %}-->
             </tbody>
         </table>
     </div>
@@ -269,6 +269,27 @@
 
 <script>
     let sortOrder = {name: 1, version: 1}; // 1 为正序，-1 为倒序
+
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/installed')
+            .then(response => response.json())
+            .then(packages => {
+                const tableBody = document.getElementById('package-table');
+                tableBody.innerHTML = ''; // 清空现有内容
+                packages.forEach(package => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                    <td>${package.name}</td>
+                    <td>${package.version}</td>
+                    <td>
+                        <button onclick="uninstall('${package.name}')">卸载</button>
+                    </td>
+                `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('加载已安装包失败:', error));
+    });
 
     function filterPackages() {
         const filter = document.getElementById('filter').value.toLowerCase();
