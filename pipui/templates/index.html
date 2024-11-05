@@ -40,7 +40,6 @@
             height: 100%; /* 改为 100% 以填充剩余空间 */
         }
 
-
         .content {
             flex: 3;
             padding: 20px;
@@ -54,11 +53,11 @@
             color: #ffffff;
         }
 
-        input {
-            width: 100%;
+        input, select, textarea {
+            width: 100%; /* 确保所有输入框的宽度一致 */
             padding: 4px 8px;
             border: 1px solid #444;
-            border-radius: 5px;
+            border-radius: 6px;
             background-color: #333;
             color: #f5f5f5;
             box-sizing: border-box;
@@ -66,25 +65,12 @@
             line-height: 18px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #444;
-        }
-
-        th {
-            background-color: #444;
-            cursor: pointer;
-        }
-
-        tr:hover {
-            background-color: #555;
+        textarea {
+            resize: vertical;
+            min-height: 400px;
+            max-height: 100%;
+            height: auto;
+            margin-bottom: 15px;
         }
 
         button {
@@ -124,19 +110,6 @@
             word-break: break-word;
         }
 
-        /* 美化下拉框 */
-        select {
-            width: 100%;
-            padding: 4px 8px;
-            border: 1px solid #444;
-            border-radius: 6px;
-            background-color: #333;
-            color: #f5f5f5;
-            box-sizing: border-box;
-            height: 30px;
-            margin-bottom: 10px;
-        }
-
         /* 美化文件选择框 */
         #file-input {
             padding: 6px;
@@ -149,7 +122,8 @@
             cursor: pointer;
             margin-bottom: 15px;
             display: inline-block;
-            width: calc(100% - 16px); /* 留出一些空间给按钮 */
+            width: 100%; /* 使用100%宽度 */
+            margin-top: 15px;
         }
 
         #file-input::file-selector-button {
@@ -160,29 +134,13 @@
             border-radius: 6px;
             font-size: 1em;
             cursor: pointer;
-            height: 30px; /* 按钮的高度统一设置 */
+            height: 30px;
+            width: auto; /* 按钮宽度自动适应内容 */
         }
 
         #file-input::file-selector-button:hover {
             background-color: #0056b3;
         }
-
-        #install-input {
-            width: 100%;
-            padding: 4px 8px;
-            font-size: 1em;
-            border: 1px solid #444;
-            border-radius: 6px;
-            background-color: #333;
-            color: #f5f5f5;
-            box-sizing: border-box;
-            margin-bottom: 15px;
-            resize: vertical; /* 允许用户垂直调整大小 */
-            min-height: 200px; /* 设置最小高度，确保它至少有一定的高度 */
-            max-height: 100%; /* 最大高度设置为100%，可以填充父容器 */
-            height: auto; /* 自动调整高度 */
-        }
-
 
         #install-input::placeholder {
             color: #aaa;
@@ -197,6 +155,28 @@
         .install-controls button {
             margin-left: auto;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #444;
+        }
+
+        th {
+            background-color: #444;
+            cursor: pointer;
+        }
+
+        tr:hover {
+            background-color: #555;
+        }
+
 
     </style>
 
@@ -260,7 +240,7 @@
             <input type="file" id="file-input" accept=".txt"/>
             <textarea id="install-input" placeholder="请输入库名和版本，例如：pandas==2.0" rows="4"></textarea>
 
-            <button onclick="installPackages()">安装</button>
+            <button onclick="installPackages()" >安装</button>
         </div>
     </div>
 </div>
