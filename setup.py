@@ -1,7 +1,6 @@
 """
 python setup.py sdist bdist_wheel
 """
-import os
 import shutil
 import sys
 from setuptools import setup, find_packages
@@ -15,16 +14,13 @@ if os.path.exists("./build"):
     shutil.rmtree("./build")
 setup(
     name="pipui",
-    # version=datetime.now().strftime("%Y%m%d"),
     version="0.1.12",
     description="pipui",
     long_description=long_description,
     author="merlon",
     license="BSD",
     packages=find_packages(),
-    # packages=["pygcbs"],
     package_data={"pipui": ["templates/*", ], },
-    # include_package
     install_requires=[
         "flask",
         "requests",
@@ -34,8 +30,5 @@ setup(
     setup_requires=["setuptools", "wheel"],
     entry_points={"console_scripts": ["pipui = pipui.server:main"]},
     python_requires=">=3.6, <4",
-    # include_package_data=True,
-    cmdclass={
-        # "install": PostInstallCommand,
-    },
+    cmdclass={},
 )
