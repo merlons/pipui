@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh">
+<
 <head>
     <meta charset="UTF-8">
     <title>Python 包管理工具</title>
-
 
     <style>
         body {
@@ -54,7 +54,6 @@
             color: #ffffff;
         }
 
-
         input {
             width: 100%;
             padding: 8px;
@@ -63,6 +62,8 @@
             background-color: #333;
             color: #f5f5f5;
             box-sizing: border-box;
+            height: 40px; /* 确保输入框和按钮高度一致 */
+            line-height: 24px; /* 确保文本垂直居中 */
         }
 
         table {
@@ -86,20 +87,43 @@
             background-color: #555;
         }
 
+        /* 统一按钮样式 */
         button {
             background-color: #007bff;
             color: #ffffff;
             border: none;
-            padding: 6px 15px; /* 调整内边距，使按钮高度适配 */
+            padding: 8px 16px; /* 统一内边距 */
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9em; /* 调整字体大小，使按钮更紧凑 */
+            font-size: 1em; /* 调整字体大小，使按钮更紧凑 */
+            height: 40px; /* 确保按钮和输入框高度一致 */
+            line-height: 24px; /* 确保文本垂直居中 */
         }
 
         button:hover {
             background-color: #0056b3;
         }
 
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 80%; /* 输入框宽度占大部分 */
+            padding: 8px 12px; /* 调整内边距 */
+        }
+
+        .search-container button {
+            margin-left: 10px;
+        }
+
+        #interpreter-info {
+            white-space: normal; /* 确保文本自动换行 */
+            word-wrap: break-word; /* 在长单词时自动换行 */
+            word-break: break-word; /* 确保长单词（如路径）也能正确换行 */
+        }
 
         /* 美化下拉框 */
         select {
@@ -113,25 +137,7 @@
             margin-bottom: 10px;
         }
 
-        /* .sidebar-right 部分样式 */
-        .sidebar-right h2 {
-            font-size: 1.5em;
-            color: #ffffff;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #444;
-            padding-bottom: 5px;
-        }
-
-        #interpreter-info {
-            margin-bottom: 20px;
-        }
-
-        #interpreter-info span {
-            display: block;
-            color: #bbb;
-            margin-bottom: 8px;
-        }
-
+        /* 安装相关的样式 */
         #install-input {
             width: 100%;
             padding: 12px;
@@ -142,102 +148,13 @@
             color: #f5f5f5;
             box-sizing: border-box;
             margin-bottom: 15px;
-            resize: vertical; /* 允许用户调整文本框高度 */
+            resize: vertical;
         }
 
         #install-input::placeholder {
             color: #aaa;
         }
 
-
-        .install-controls button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 1em;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .install-controls button:hover {
-            background-color: #45a049;
-        }
-
-        /* 搜索结果样式 */
-        #search-results {
-            margin-top: 10px;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-
-        #search-results table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-
-        #search-results th, #search-results td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #444;
-        }
-
-        #search-results th {
-            background-color: #444;
-        }
-
-        #search-results td {
-            border-left: none;
-            border-right: none;
-        }
-
-        #search-results tr:hover {
-            background-color: #555;
-        }
-
-        .search-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .search-container input {
-            width: 80%; /* 输入框宽度占大部分 */
-            padding: 8px 12px; /* 调整内边距，让输入框和按钮高度一致 */
-            border: 1px solid #444;
-            border-radius: 5px;
-            background-color: #333;
-            color: #f5f5f5;
-            box-sizing: border-box;
-            height: 40px; /* 确保输入框和按钮高度一致 */
-            line-height: 24px; /* 确保文本垂直居中 */
-        }
-
-        .search-container button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 15px; /* 调整内边距，使按钮和输入框对齐 */
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            margin-left: 10px;
-            height: 40px; /* 确保按钮和输入框高度一致 */
-            line-height: 24px; /* 确保按钮内文本垂直居中 */
-        }
-
-        .search-container button:hover {
-            background-color: #0056b3;
-        }
-
-        #interpreter-info {
-            white-space: normal; /* 确保文本自动换行 */
-            word-wrap: break-word; /* 在长单词时自动换行 */
-            word-break: break-word; /* 确保长单词（如路径）也能正确换行 */
-        }
 
     </style>
 
@@ -248,19 +165,15 @@
 </div>
 
 <div class="main">
-
-
     <div class="sidebar-left">
         <h2>在线搜索</h2>
         <div class="search-container">
             <input type="text" id="search-filter" placeholder="按名称搜索...">
-            <!-- 将按钮放到输入框右侧 -->
             <button id="search-button" onclick="searchPackages()">搜索</button>
         </div>
 
         <div id="search-results"></div> <!-- 搜索结果展示区域 -->
     </div>
-
 
     <div class="content">
         <h2>已安装的包</h2>
@@ -289,10 +202,7 @@
 
     <div class="sidebar-right">
         <h2>基本信息</h2>
-        <div id="interpreter-info">
-            <!--            <span>Python 路径: <strong id="python-path">/usr/bin/python</strong></span>-->
-            <!--            <span>Python 版本: <strong id="python-version">Python 3.6</strong></span>-->
-        </div>
+        <div id="interpreter-info"></div>
         <h2>在线安装</h2>
         <div class="install-controls">
             <select id="install-mirror-source">
@@ -310,13 +220,10 @@
             <button onclick="installPackages()">安装</button>
         </div>
     </div>
-
-
 </div>
 
-<div class="footer">
-    <!-- 底部内容（暂时为空） -->
-</div>
+<div class="footer"></div>
+
 
 <script>
     let sortOrder = {name: 1, version: 1}; // 1 为正序，-1 为倒序
