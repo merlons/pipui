@@ -1,7 +1,7 @@
 from typing import Dict, List, Any
 from flask import Flask, request, jsonify, render_template
 import pipui
-from pipui.utils import get_installed_packages, uninstall_package, search_packages, install_package
+from pipui.utils import get_installed_packages, uninstall_package, search_packages, install_package, available_packages
 
 app = Flask(__name__, template_folder=pipui.__path__[0] + "/templates")
 
@@ -23,7 +23,7 @@ def delete_package(package_name: str):
 @app.route("/search/", methods=["GET"])
 def search_package():
     q = request.args.get('q')
-    available_packages = search_packages(q)  # 替换为你的逻辑
+    # available_packages = search_packages(q)  # 替换为你的逻辑
     results = [pkg for pkg in available_packages if q.lower() in pkg["name"].lower()]
     return jsonify(results)
 

@@ -8,8 +8,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #121212; /* 更深的背景色 */
-            color: #e0e0e0; /* 更柔和的文字颜色 */
+            background-color: #121212;
+            color: #e0e0e0;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -17,7 +17,7 @@
         }
 
         .header, .footer {
-            background-color: #1e1e1e; /* 深色标题和底部 */
+            background-color: #1e1e1e;
             padding: 15px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
@@ -26,28 +26,27 @@
         .main {
             display: flex;
             flex: 1;
-            margin: 10px; /* 添加间距 */
+            margin: 10px;
         }
 
         .sidebar-left, .sidebar-right {
             flex: 1;
-            background-color: rgba(34, 34, 34, 0); /* 设置为透明背景 */
-            padding: 5px; /* 减少内边距 */
+            background-color: rgba(34, 34, 34, 0);
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            height: 70vh; /* 设置固定高度 */
-            overflow-y: hidden; /* 去掉垂直滚动条 */
-            overflow-x: hidden; /* 去掉水平滚动条 */
+            height: 70vh;
+            overflow-y: auto;
             display: flex;
-            flex-direction: column; /* 使内容垂直排列 */
+            flex-direction: column;
         }
 
         .content {
             flex: 3;
             padding: 20px;
-            background-color: #2c2c2c; /* 内容区域背景颜色 */
+            background-color: #2c2c2c;
             border-radius: 8px;
-            margin: 0 10px; /* 中间内容与边栏的间隔 */
+            margin: 0 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
 
@@ -57,204 +56,155 @@
 
         .search-container {
             position: relative;
-            width: calc(100% - 20px); /* 调整宽度以与表格对齐 */
-            margin-bottom: 10px;
+            width: 100%;
+            margin-bottom: 20px;
         }
 
         input {
-            width: 100%; /* 输入框占满容器 */
-            padding: 8px; /* 减少内边距 */
+            width: 100%;
+            padding: 8px;
             border: 1px solid #444;
             border-radius: 5px;
-            background-color: #333; /* 输入框背景颜色 */
-            color: #f5f5f5; /* 输入框文字颜色 */
-            box-sizing: border-box; /* 确保内边距和边框不会影响宽度 */
-        }
-
-        .search-icon {
-            position: absolute;
-            top: 50%;
-            left: 10px;
-            transform: translateY(-50%);
-            color: #888; /* 图标颜色 */
+            background-color: #333;
+            color: #f5f5f5;
+            box-sizing: border-box;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 10px; /* 减少下边距 */
+            margin-top: 20px;
         }
 
         th, td {
-            padding: 5px; /* 减少单元格内边距 */
-            text-align: left;
+            padding: 10px;
+            text-align: center;
             border-bottom: 1px solid #444;
         }
 
         th {
-            background-color: #444; /* 表头背景颜色 */
+            background-color: #444;
             cursor: pointer;
         }
 
         tr:hover {
-            background-color: #555; /* 行悬停效果 */
-        }
-
-        #search-results {
-            margin-top: 10px; /* 调整与搜索结果的间距 */
-            flex-grow: 1; /* 使搜索结果区域填满剩余空间 */
-            overflow-y: hidden; /* 去掉搜索结果的滚动条 */
-            overflow-x: hidden; /* 去掉水平滚动条 */
+            background-color: #555;
         }
 
         button {
-            background-color: #007bff; /* 按钮背景色 */
-            color: #ffffff; /* 按钮文字颜色 */
+            background-color: #007bff;
+            color: #ffffff;
             border: none;
-            padding: 3px 12px; /* 调整高度 */
-            border-radius: 5px;
+            padding: 6px 15px; /* 调整内边距，使按钮高度适配 */
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 14px; /* 可选：调整字体大小 */
+            font-size: 0.9em; /* 调整字体大小，使按钮更紧凑 */
         }
 
         button:hover {
-            background-color: #0056b3; /* 悬停时按钮背景色 */
+            background-color: #0056b3;
         }
 
-
-        .search-container {
-            position: relative;
-            width: calc(100% - 20px);
-            margin-bottom: 20px; /* 增加与表格的间隔 */
-        }
-
-        table {
-            margin-top: 20px; /* 增加表格的上边距 */
-        }
-
-        .interpreter-info span {
-            display: block; /* 每行单独显示 */
-            margin-top: 5px; /* 行间距 */
-            color: #959191; /* 维持灰色风格 */
-        }
 
         /* 美化下拉框 */
         select {
-            width: 100%; /* 让下拉框占满整个单元格 */
-            padding: 5px; /* 内边距 */
-            border: 1px solid #444; /* 边框颜色 */
-            border-radius: 5px; /* 圆角 */
-            background-color: #333; /* 背景颜色 */
-            color: #f5f5f5; /* 文字颜色 */
-            box-sizing: border-box; /* 包含内边距和边框在宽度计算内 */
-            margin-bottom: 5px; /* 下方间距 */
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background-color: #333;
+            color: #f5f5f5;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        /* .sidebar-left 部分样式 */
+        .sidebar-left h2 {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #444;
+            padding-bottom: 5px;
+        }
+
+        .interpreter-info {
+            margin-bottom: 20px;
+        }
+
+        .interpreter-info span {
+            display: block;
+            color: #bbb;
+            margin-bottom: 8px;
+        }
+
+        #install-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 1px solid #444;
+            border-radius: 6px;
+            background-color: #333;
+            color: #f5f5f5;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            resize: vertical; /* 允许用户调整文本框高度 */
+        }
+
+        #install-input::placeholder {
+            color: #aaa;
+        }
+
+
+        .install-controls button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1em;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .install-controls button:hover {
+            background-color: #45a049;
+        }
+
+        /* 搜索结果样式 */
+        #search-results {
+            margin-top: 10px;
+            flex-grow: 1;
+            overflow-y: auto;
         }
 
         #search-results table {
-            width: 100%; /* 确保表格宽度为100% */
-            border-collapse: collapse; /* 合并边框 */
-            table-layout: fixed; /* 列宽固定 */
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
         }
 
         #search-results th, #search-results td {
-            padding: 10px; /* 增加内边距 */
-            text-align: center; /* 中间对齐 */
-            border-bottom: 1px solid #444; /* 只保留底部边框 */
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #444;
         }
 
         #search-results th {
-            background-color: #444; /* 表头背景颜色 */
+            background-color: #444;
         }
 
-        /* 去掉单元格之间的竖线边框 */
         #search-results td {
-            border-left: none; /* 去掉左边的边框 */
-            border-right: none; /* 去掉右边的边框 */
+            border-left: none;
+            border-right: none;
         }
 
         #search-results tr:hover {
-            background-color: #555; /* 行悬停效果 */
+            background-color: #555;
         }
-/* .sidebar-left 部分样式 */
-.sidebar-left {
-    flex: 1;
-    background-color: #2c2c2c; /* 深色背景 */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 添加阴影 */
-    height: 70vh; /* 固定高度 */
-    overflow-y: auto; /* 添加垂直滚动条 */
-    display: flex;
-    flex-direction: column; /* 垂直排列 */
-}
-
-.sidebar-left h2 {
-    font-size: 1.5em;
-    color: #ffffff;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #444; /* 分割线 */
-    padding-bottom: 5px;
-}
-
-.interpreter-info {
-    margin-bottom: 20px;
-}
-
-.interpreter-info span {
-    display: block;
-    color: #bbb; /* 更柔和的灰色 */
-    margin-bottom: 8px; /* 适当增加行间距 */
-}
-
-#install-input {
-    width: 100%;
-    padding: 12px;
-    font-size: 1em;
-    border: 1px solid #444;
-    border-radius: 6px;
-    background-color: #333;
-    color: #f5f5f5;
-    box-sizing: border-box;
-    margin-bottom: 15px; /* 输入框下方间距 */
-}
-
-#install-input::placeholder {
-    color: #aaa;
-}
-
-.install-controls {
-    display: flex;
-    flex-direction: column;
-}
-
-.install-controls select {
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #444;
-    border-radius: 6px;
-    background-color: #333;
-    color: #f5f5f5;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-}
-
-.install-controls button {
-    padding: 10px;
-    background-color: #4CAF50; /* 绿色按钮 */
-    color: white;
-    font-size: 1em;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-}
-
-.install-controls button:hover {
-    background-color: #45a049; /* 鼠标悬停效果 */
-}
 
     </style>
+
 </head>
 <body>
 <div class="header">
@@ -267,29 +217,26 @@
 <div class="main">
 
 
-<div class="sidebar-left">
-    <h2>基本信息</h2>
-    <div class="interpreter-info">
-        <span>Python 版本: <strong id="python-version">Python 3.6</strong></span>
-        <span>Python 路径: <strong id="python-path">/usr/bin/python</strong></span>
-    </div>
-    <h2>在线安装</h2>
-    <input type="text" id="install-input" placeholder="请输入库名和版本，例如：pandas==2.0" />
-    <div class="install-controls">
-        <select id="install-mirror-source">
-            <option value="https://pypi.python.org/simple">默认镜像</option>
-            <option value="https://mirrors.aliyun.com/pypi/simple/">阿里云</option>
-            <option value="https://pypi.tuna.tsinghua.edu.cn/simple">清华大学</option>
-            <option value="https://pypi.hust.edu.cn/simple">华中科技大学</option>
-            <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
-            <option value="https://pypi.douban.com/simple/">豆瓣</option>
-        </select>
-        <button onclick="installPackages()">安装</button>
-    </div>
+    <div class="sidebar-left">
+        <h2>基本信息</h2>
+        <div class="interpreter-info">
+            <span>Python 路径: <strong id="python-path">/usr/bin/python</strong></span>
+            <span>Python 版本: <strong id="python-version">Python 3.6</strong></span>
+        </div>
+        <h2>在线安装</h2>
+        <div class="install-controls">
+    <select id="install-mirror-source">
+        <option value="https://pypi.python.org/simple">默认镜像</option>
+        <option value="https://mirrors.aliyun.com/pypi/simple/">阿里云</option>
+        <option value="https://pypi.tuna.tsinghua.edu.cn/simple">清华大学</option>
+        <option value="https://pypi.hust.edu.cn/simple">华中科技大学</option>
+        <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
+        <option value="https://pypi.douban.com/simple/">豆瓣</option>
+    </select>
+    <textarea id="install-input" placeholder="请输入库名和版本，例如：pandas==2.0" rows="4"></textarea>
+    <button onclick="installPackages()">安装</button>
 </div>
-
-
-
+    </div>
 
 
     <div class="content">
