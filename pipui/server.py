@@ -34,7 +34,7 @@ def pip_uninstall(package_name: str):
 @app.route("/search/", methods=["GET"])
 def pip_search():
     q = request.args.get('q')
-    available_packages = PipManager().pip_search(q)  # 替换为你的逻辑
+    # available_packages = PipManager().pip_search(q)  # 替换为你的逻辑
     results = [pkg for pkg in available_packages if q.lower() in pkg["name"].lower()]
     return jsonify(results)
 
