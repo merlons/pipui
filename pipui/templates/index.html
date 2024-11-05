@@ -29,7 +29,7 @@
             margin: 10px;
         }
 
-        .sidebar-left, .sidebar-right {
+        .sidebar-right, .sidebar-left {
             flex: 1;
             background-color: rgba(34, 34, 34, 0);
             padding: 20px;
@@ -118,8 +118,8 @@
             margin-bottom: 10px;
         }
 
-        /* .sidebar-left 部分样式 */
-        .sidebar-left h2 {
+        /* .sidebar-right 部分样式 */
+        .sidebar-right h2 {
             font-size: 1.5em;
             color: #ffffff;
             margin-bottom: 10px;
@@ -218,24 +218,22 @@
 
 
     <div class="sidebar-left">
-        <h2>基本信息</h2>
-        <div class="interpreter-info">
-            <span>Python 路径: <strong id="python-path">/usr/bin/python</strong></span>
-            <span>Python 版本: <strong id="python-version">Python 3.6</strong></span>
+        <h2>在线搜索</h2>
+        <div class="search-container">
+            <!--                <span class="search-icon">🔍</span>-->
+            <input type="text" id="search-filter" placeholder="按名称搜索..."
+                   onkeypress="if (event.key === 'Enter') searchPackages()">
         </div>
-        <h2>在线安装</h2>
-        <div class="install-controls">
-    <select id="install-mirror-source">
-        <option value="https://pypi.python.org/simple">默认镜像</option>
-        <option value="https://mirrors.aliyun.com/pypi/simple/">阿里云</option>
-        <option value="https://pypi.tuna.tsinghua.edu.cn/simple">清华大学</option>
-        <option value="https://pypi.hust.edu.cn/simple">华中科技大学</option>
-        <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
-        <option value="https://pypi.douban.com/simple/">豆瓣</option>
-    </select>
-    <textarea id="install-input" placeholder="请输入库名和版本，例如：pandas==2.0" rows="4"></textarea>
-    <button onclick="installPackages()">安装</button>
-</div>
+        <h3>镜像源</h3>
+        <select id="mirror-source">
+            <option value="https://pypi.python.org/simple">默认镜像</option>
+            <option value="https://mirrors.aliyun.com/pypi/simple/">阿里云</option>
+            <option value="https://pypi.tuna.tsinghua.edu.cn/simple">清华大学</option>
+            <option value="https://pypi.hust.edu.cn/simple">华中科技大学</option>
+            <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
+            <option value="https://pypi.douban.com/simple/">豆瓣</option>
+        </select>
+        <div id="search-results"></div> <!-- 搜索结果展示区域 -->
     </div>
 
 
@@ -265,23 +263,27 @@
     </div>
 
     <div class="sidebar-right">
-        <h2>在线搜索</h2>
-        <div class="search-container">
-            <!--                <span class="search-icon">🔍</span>-->
-            <input type="text" id="search-filter" placeholder="按名称搜索..."
-                   onkeypress="if (event.key === 'Enter') searchPackages()">
+        <h2>基本信息</h2>
+        <div class="interpreter-info">
+            <span>Python 路径: <strong id="python-path">/usr/bin/python</strong></span>
+            <span>Python 版本: <strong id="python-version">Python 3.6</strong></span>
         </div>
-        <h3>镜像源</h3>
-        <select id="mirror-source">
-            <option value="https://pypi.python.org/simple">默认镜像</option>
-            <option value="https://mirrors.aliyun.com/pypi/simple/">阿里云</option>
-            <option value="https://pypi.tuna.tsinghua.edu.cn/simple">清华大学</option>
-            <option value="https://pypi.hust.edu.cn/simple">华中科技大学</option>
-            <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
-            <option value="https://pypi.douban.com/simple/">豆瓣</option>
-        </select>
-        <div id="search-results"></div> <!-- 搜索结果展示区域 -->
+        <h2>在线安装</h2>
+        <div class="install-controls">
+            <select id="install-mirror-source">
+                <option value="https://pypi.python.org/simple">默认镜像</option>
+                <option value="https://mirrors.aliyun.com/pypi/simple/">阿里云</option>
+                <option value="https://pypi.tuna.tsinghua.edu.cn/simple">清华大学</option>
+                <option value="https://pypi.hust.edu.cn/simple">华中科技大学</option>
+                <option value="https://pypi.mirrors.ustc.edu.cn/simple/">中国科学技术大学</option>
+                <option value="https://pypi.douban.com/simple/">豆瓣</option>
+            </select>
+            <textarea id="install-input" placeholder="请输入库名和版本，例如：pandas==2.0" rows="4"></textarea>
+            <button onclick="installPackages()">安装</button>
+        </div>
     </div>
+
+
 </div>
 
 <div class="footer">
