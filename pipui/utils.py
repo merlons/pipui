@@ -4,55 +4,62 @@ import subprocess
 import requests
 
 
+def subprocess_run(cmd):
+    result = subprocess.run(
+        cmd,
+        check=False,  # 如果命令返回非零退出码，将引发 CalledProcessError
+        stdout=subprocess.PIPE,  # 捕获标准输出
+        stderr=subprocess.PIPE,  # 捕获标准错误输出
+        universal_newlines=True  # 转换输出为文本字符串（在 Python 3.6 中替代 text=True）
+    )
+    return result
+
+
 class PipManager:
     def __init__(self):
         self.executable = sys.executable  # 解释器路径
         version = sys.version_info
         self.version = f"{version.major}.{version.minor}.{version.micro}"
 
-
     def pip_list(self):
-        try:
-            packages = subprocess.check_output([self.executable, "-m", 'pip', 'list', '--format=freeze'],
-                                               stderr=subprocess.STDOUT, ).decode().replace('\r\n', '\n').split('\n')
-            return [{'name': p.split('==')[0], 'version': p.split('==')[1]} for p in packages if '==' in p]
-        except subprocess.CalledProcessError:
+        result = subprocess_run([self.executable, "-m", 'pip', 'list', '--format=freeze'])
+        if result.returncode != 0:
+            print(result.stderr)
             return []
+        packages = result.stdout.replace('\r\n', '\n').split('\n')
+        return [{'name': p.split('==')[0], 'version': p.split('==')[1]} for p in packages if '==' in p]
 
     def pip_uninstall(self, package_name):
-        try:
-            subprocess.check_call([self.executable, "-m", "pip", "uninstall", "-y", package_name])
-            return True
-        except subprocess.CalledProcessError:
-            return False
+        subprocess_run([self.executable, "-m", "pip", "uninstall", "-y", package_name])
 
     def pip_install(self, package_name, index_url=None):
+        errors = []
         for i in package_name.split(' '):
             if not i:
                 continue
             i = i.split("#")[0]
             if index_url:
-                subprocess.check_call([self.executable, "-m", "pip", "install", i, "--index-url", index_url])
+                result = subprocess_run([self.executable, "-m", "pip", "install", i, "--index-url", index_url])
+                if result.returncode != 0:
+                    print(result.stderr)
+                    errors.append(result.stderr)
+
             else:
-                subprocess.check_call([self.executable, "-m", "pip", "install", i])
+                result = subprocess_run([self.executable, "-m", "pip", "install", i])
+                if result.returncode != 0:
+                    print(result.stderr)
+                    errors.append(result.stderr)
+        return errors
 
     def pip_search_versions(self, package_name):
-        try:
-
-            # 调用 pip index versions 命令并捕获输出
-            result = subprocess.check_output(
-                [self.executable, "-m", 'pip', 'index', 'versions', package_name],
-                stderr=subprocess.STDOUT,  # 将标准错误合并到标准输出
-                # text=True  # 以文本模式返回输出
-            )
-        except subprocess.CalledProcessError as e:
-            print(f"Error: {e.output.strip()}")
+        result = subprocess_run([self.executable, "-m", 'pip', 'index', 'versions', package_name])
+        if result.returncode != 0:
+            print(result.stderr)
             return []
 
         # 解析输出
         versions = []
-        for line in result.splitlines():
-            line = line.decode()
+        for line in result.stdout.replace('\r\n', '\n').split('\n'):
             if "Available versions:" in line:
                 versions = line.replace("Available versions:", "").replace(' ', '').split(',')
                 break  # 找到后就退出循环
