@@ -14,7 +14,7 @@ if os.path.exists("./build"):
     shutil.rmtree("./build")
 setup(
     name="pipui",
-    version="0.2.0",
+    version="0.2.1",
     description="pipui",
     long_description=long_description,
     long_description_content_type='text/markdown',
