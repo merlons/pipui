@@ -29,8 +29,8 @@ jobs:
         python setup.py  # 使用 setup.py 构建包
 
     - name: Publish package to PyPI
-        run: |
-          twine upload dist/*  # 使用 twine 上传 dist 目录下的所有包
-        env:
-          TWINE_USERNAME: __token__  # 使用 PyPI 的 token 作为用户名
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}  # 从 GitHub secrets 获取 PyPI API Token
+      run: |
+        twine upload dist/*  # 使用 twine 上传 dist 目录下的所有包
+      env:
+        TWINE_USERNAME: __token__  # 使用 PyPI 的 token 作为用户名
+        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}  # 从 GitHub secrets 获取 PyPI API Token
