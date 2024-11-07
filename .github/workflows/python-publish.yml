@@ -3,7 +3,7 @@ name: Upload Python Package
 on:
   push:
     tags:
-      - 'v*'  # 当推送的标签以 v 开头时（例如 v1.2.3），触发工作流
+      - '*'  # 当推送的标签以 v 开头时（例如 v1.2.3），触发工作流
 
 permissions:
   contents: read  # 设置必要的权限，允许读取仓库内容
