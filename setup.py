@@ -17,6 +17,7 @@ setup(
     version="0.2.0",
     description="pipui",
     long_description=long_description,
+    long_description_content_type='text/markdown',
     author="merlon",
     license="BSD",
     packages=find_packages(),
