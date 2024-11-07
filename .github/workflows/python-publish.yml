@@ -2,8 +2,6 @@ name: Upload Python Package
 
 on:
   push:
-    branches:
-      - master  # 触发条件改为推送到 master 分支
     tags:
       - 'v*'  # 当推送的标签以 v 开头时（例如 v1.2.3），触发工作流
 
